@@ -109,7 +109,7 @@
       return $.ajax(this.ajaxSettings(params, defaults));
     };
 
-    Base.prototype.ajaxQueue = function(params, defaults, record)) {
+    Base.prototype.ajaxQueue = function(params, defaults, record) {
       var deferred, jqXHR, promise, request, settings;
 
       jqXHR = null;
