@@ -109,7 +109,7 @@
       return $.ajax(this.ajaxSettings(params, defaults));
     };
 
-    Base.prototype.ajaxQueue = function(params, defaults) {
+    Base.prototype.ajaxQueue = function(params, defaults, record)) {
       var deferred, jqXHR, promise, request, settings;
 
       jqXHR = null;
@@ -120,6 +120,17 @@
       }
       settings = this.ajaxSettings(params, defaults);
       request = function(next) {
+        var _ref, _ref1;
+
+        if ((record != null ? record.id : void 0) != null) {
+          if ((_ref = settings.url) == null) {
+            settings.url = Ajax.getURL(record);
+          }
+          if ((_ref1 = settings.data) != null) {
+            _ref1.id = record.id;
+          }
+        }
+        settings.data = JSON.stringify(settings.data);
         return jqXHR = $.ajax(settings).done(deferred.resolve).fail(deferred.reject).then(next, next);
       };
       promise.abort = function(statusText) {
@@ -228,6 +239,7 @@
 
     Singleton.prototype.create = function(params, options) {
       return this.ajaxQueue(params, {
+        contentType: 'application/json',
         type: 'POST',
         data: JSON.stringify(this.record),
         url: Ajax.getCollectionURL(this.record)
@@ -237,6 +249,7 @@
     Singleton.prototype.update = function(params, options) {
       return this.ajaxQueue(params, {
         type: 'PUT',
+        contentType: 'application/json',
         data: JSON.stringify(this.record),
         url: Ajax.getURL(this.record)
       }).done(this.recordResponse(options)).fail(this.failResponse(options));
@@ -358,6 +371,12 @@
   };
 
   Ajax.defaults = Base.prototype.defaults;
+
+  Ajax.Base = Base;
+
+  Ajax.Singleton = Singleton;
+
+  Ajax.Collection = Collection;
 
   Spine.Ajax = Ajax;
 
