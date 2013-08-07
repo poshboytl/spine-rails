@@ -234,7 +234,7 @@
       return this.ajaxQueue(params, {
         type: 'GET',
         url: Ajax.getURL(this.record)
-      }).done(this.recordResponse(options)).fail(this.failResponse(options));
+      }, this.record).done(this.recordResponse(options)).fail(this.failResponse(options));
     };
 
     Singleton.prototype.create = function(params, options) {
@@ -243,7 +243,7 @@
         type: 'POST',
         data: JSON.stringify(this.record),
         url: Ajax.getCollectionURL(this.record)
-      }).done(this.recordResponse(options)).fail(this.failResponse(options));
+      }, this.record).done(this.recordResponse(options)).fail(this.failResponse(options));
     };
 
     Singleton.prototype.update = function(params, options) {
@@ -252,14 +252,14 @@
         contentType: 'application/json',
         data: JSON.stringify(this.record),
         url: Ajax.getURL(this.record)
-      }).done(this.recordResponse(options)).fail(this.failResponse(options));
+      }, this.record).done(this.recordResponse(options)).fail(this.failResponse(options));
     };
 
     Singleton.prototype.destroy = function(params, options) {
       return this.ajaxQueue(params, {
         type: 'DELETE',
         url: Ajax.getURL(this.record)
-      }).done(this.recordResponse(options)).fail(this.failResponse(options));
+      }, this.record).done(this.recordResponse(options)).fail(this.failResponse(options));
     };
 
     Singleton.prototype.recordResponse = function(options) {
